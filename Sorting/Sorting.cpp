@@ -19,6 +19,7 @@ void mergeSort(vector<int>& vec);
 void neitherland(vector<int>& vec, int num);
 void neitherland2(vector<int>& vec, int num);
 void quickSort(vector<int>& vec, int L, int R);
+void quickSort2(vector<int>& vec, int L, int R);
 
 void printVec(const vector<int>& vec) {
     for (int i = 0; i < vec.size(); i++)
@@ -41,21 +42,21 @@ int main()
 
     cout << "Select Sort:" << endl;
     auto start1 = system_clock::now();
-    selectSort(vec1);
+    //selectSort(vec1);
     auto end1 = system_clock::now();
     auto duration1 = duration_cast<microseconds>(end1 - start1);
     cout << double(duration1.count()) * microseconds::period::num / microseconds::period::den << "s" << endl;
 
     cout << "Bubble Sort:" << endl;
     auto start2 = system_clock::now();
-    bubbleSort(vec2);
+    //bubbleSort(vec2);
     auto end2 = system_clock::now();
     auto duration2 = duration_cast<microseconds>(end2 - start2);
     cout << double(duration2.count()) * microseconds::period::num / microseconds::period::den << "s" << endl;
 
     cout << "Insert Sort:" << endl;
     auto start3 = system_clock::now();
-    insertSort(vec3);
+    //insertSort(vec3);
     auto end3 = system_clock::now();
     auto duration3 = duration_cast<microseconds>(end3 - start3);
     cout << double(duration3.count()) * microseconds::period::num / microseconds::period::den << "s" << endl;
@@ -69,7 +70,7 @@ int main()
 
     cout << "Quick Sort:" << endl;
     auto start5 = system_clock::now();
-    quickSort(vec5, 0, vec5.size());
+    quickSort2(vec5, 0, vec5.size());
     auto end5 = system_clock::now();
     auto duration5 = duration_cast<microseconds>(end5 - start5);
     cout << double(duration4.count()) * microseconds::period::num / microseconds::period::den << "s" << endl;
@@ -109,8 +110,9 @@ void neitherland2(vector<int>& vec, int num) {
     cout << less << endl << greater << endl;
 }
 
-int partition(vector<int>& vec, int num, int L, int R) {
+int partition(vector<int>& vec, int L, int R) {
     int less = L-1;
+    int num = vec[R - 1];
     for (int i = L; i < R; ++i) {
         if (vec[i] <= num) {
             swap(vec[++less], vec[i]);
@@ -124,11 +126,36 @@ void quickSort(vector<int>& vec, int L, int R) {
         return;
     }
     srand(time(0));
-    int index = rand() % (R - L - 1) + L;
+    unsigned int index = rand() % (R - L) + L;
     swap(vec[index], vec[R - 1]);
-    int M = partition(vec, vec[R - 1], L, R);
+    int M = partition(vec, L, R);
     quickSort(vec, L, M);
     quickSort(vec, M+1, R);
+}
+
+int partition2(vector<int>& vec, int L, int R) {
+    int M = L-1;
+    int num = vec[R - 1];
+    for (int i = L; i < R; i++) {
+        if (vec[i] <= num) {
+            swap(vec[i], vec[++M]);
+        }
+    }
+    return M;
+}
+
+void quickSort2(vector<int>& vec, int L, int R)
+{
+    if (R - L < 2) {
+        return;
+    }
+
+    srand(time(0));
+    unsigned int index = rand() % (R - L) + L;
+    swap(vec[R - 1], vec[index]);
+    int M = partition2(vec, L, R);
+    quickSort2(vec, L, M);
+    quickSort2(vec, M + 1, R);
 }
 
 
