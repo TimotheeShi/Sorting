@@ -201,3 +201,6 @@ void merge(vector<int>& vec, int L, int R) {
     copy(temp.begin(), temp.end(), vec.begin() + l);
 }
 
+void heapify() {
+
+}
